@@ -1,0 +1,26 @@
+$def with (datos)
+<h1> Crear producto </h1>
+
+<form method="post" action="/producto/crear/" role="form">
+  Nombre: <input type="text"  name="nombre"> <br>
+  Caracteristicas:  <input type="text"  name="caracteristicas"> <br>
+  Foto:  <input type="text"  name="foto"> <br>
+  Marca:  <input type="text"  name="marca"> <br>
+  Existencia Minima:  <input type="text"  name="existencia_minima"> <br>
+  Categoria:
+  <select name="categoria_id" > 
+  $for c in datos['categorias']:
+    <option value="$c.id">$c.nombre</option>
+   </select> <br>
+   Proveedor:
+    <select name="proveedor_id" >
+  $for c in datos['proveedores']:
+    	<option value="$c.id">$c.nombre</option>
+   </select>
+
+
+   <button type="submit" class="btn btn-default">Submit</button>
+
+</form>
+
+

@@ -1,0 +1,13 @@
+$def with (datos)
+<h1> Crear proveedor </h1>
+
+<form method="post" action="/proveedor/crear/" role="form">
+  Nombre: <input type="text"  name="nombre"> <br>
+  Direccion:  <input type="text"  name="direccion"> <br>
+  Ciudad: <select name="ciudad" >
+  $for c in datos['ciudades']:
+    <option value="$c.id">$c.nombre</option>
+   </select>  <br>
+   <button type="submit" class="btn btn-default">Submit</button>
+
+</form>

@@ -1,0 +1,53 @@
+$def with (datos)
+
+<script type="text/javascript">
+    function showContent() {
+        element = document.getElementById("content");
+        check = document.getElementById("check");
+        if (check.checked) {
+            element.style.display='block';
+        }
+        else {
+            element.style.display='none';
+        }
+    }
+</script>
+
+<h1> Registrar Usuario </h1>
+
+<form method="post" action="/usuario/crear/" role="form">
+  Nombre completo: <input type="text"  name="nombre_completo"> <br>
+  Identificacion: <input type="text"  name="identificacion"> <br>
+  E-mail: <input type="text"  name="e_mail"> <br>
+  Nombre de usuario: <input type="text"  name="usuario"> <br>
+  Contraseña: <input type="text"  name="contrasena"> <br>
+  Dirección de residencia: <input type="text"  name="direccion_residencia"> <br>
+  Ciudad: <select name="ciudad_residencia" > 
+  $for c in datos['ciudades']:
+    <option value="$c.id">$c.nombre</option>
+   </select> <br>
+  <br> 
+  Tipo de usuario:<br>
+  <input type="checkbox" name="Administrador" value="Administrador"> Administrador<br>
+  <input type="checkbox" name="Despachador" value="Despachador"> Despachador<br>
+  <input type="checkbox" name="Usuario_de_internet" id="check" value="Usuario_de_internet" onchange="javascript:showContent()"> Usuario de Internet<br>
+
+  <div id="content" style="display: none;">
+  Sexo: 
+  <input type="radio" name="sexo" value="M" checked>Masculino
+  <input type="radio" name="sexo" value="F">Femenino <br>
+  Fecha de Nacimiento: <input type="text" placeholder="AAAA/MM/DD" name="fecha"> <br>
+  Telefono: <input type="text"  name="telefono"> <br>
+  Dirección de despacho: <input type="text"  name="direccion_despacho"> <br>
+  Ciudad de despacho: <select name="ciudad_despacho" > 
+  $for c in datos['ciudades']:
+    <option value="$c.id">$c.nombre</option>
+   </select> <br>
+  <br> 
+ </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+
+
+

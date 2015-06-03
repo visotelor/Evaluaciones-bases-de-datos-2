@@ -1,0 +1,13 @@
+$def with (categorias_existentes)
+<h1> Crear categoria </h1>
+
+<form method="post" action="/categoria/crear/" role="form">
+	Nombre: <input type="text"  name="nombre">
+	Categoria superior: <select name="categoria_padre" >
+	$for categoria in categorias_existentes:
+ 		<option value="$categoria.id">$categoria.nombre</option>
+
+		</select>
+	 <button type="submit" class="btn btn-default">Submit</button>
+
+</form>
