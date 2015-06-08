@@ -11,6 +11,10 @@ Editar el archivo config.py con los parámetros de la conexión a la base de dat
 	Loggearse dentro de la base de datos y ejecutar:
 	start oracleSQL/EsquemaFinal.sql
 
+= Poblar DB ==
+	Ejecutar:
+	python populate_db.py
+
 = Arrancar el servidor =
 	python2 server.py
 
