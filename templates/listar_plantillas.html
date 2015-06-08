@@ -1,0 +1,19 @@
+$def with (plantillas)
+
+
+<table class="table">
+  <tr>
+    <th> Nombre de plantilla </th>
+    <th> ID </th>
+    <th> Modificable </th>
+  </tr>
+
+    $for plantilla in plantillas:
+       <tr>
+           <td>$plantilla.nombre</td>
+           <td>$plantilla.id</td>
+           <td>$plantilla.modificable</td>
+       </tr>
+    </table>
+
+</table>

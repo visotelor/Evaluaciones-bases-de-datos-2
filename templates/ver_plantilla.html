@@ -1,0 +1,17 @@
+$def with (plantilla)
+
+<h1> $plantilla.nombre </h1>
+<table class="table">
+  <tr>
+    <th> Pregunta </th>
+    <th> ID </th>
+  </tr>
+
+    $for pregunta in plantilla.preguntas:
+       <tr>
+           <td>$pregunta.pregunta</td>
+           <td>$pregunta.id</td>
+       </tr>
+    </table>
+
+</table>

@@ -4,7 +4,7 @@ CREATE TABLE estructuras
 (
 	id              NUMBER(10) NOT NULL,
 	dependencia_id  NUMBER(10),
-	director_id     NUMBER(4)
+	director_id     NUMBER(4) NOT NULL
 )
 ;
 

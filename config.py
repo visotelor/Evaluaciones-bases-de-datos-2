@@ -2,23 +2,24 @@
 #carojasq@correo.udistrital.edu.co
 
 #El presente archivo define los parametros de conexion a la base de datos y devuelve un objeto cursor para hacer las consultas SQL con el
-#CREATE USER db2 IDENTIFIED by db2;
-#GRANT CONNECT TO db2;
+"""
+DROP USER db2 CASCADE;
+CREATE USER db2 IDENTIFIED by db2;
+GRANT CONNECT TO db2;
+GRANT RESOURCE TO db2
 
+START /home/null3d/Git_repos/Evaluaciones-bases-de-datos-2/oracleSQL/EsquemaFinal.sql
+"""
+import cx_Oracle
 
 ADMIN_USER = "db2"
 ADMIN_PASSWORD = "db2"
-
-import cx_Oracle
-import psycopg2
-import psycopg2.extensions
-import psycopg2.extras
-psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # Unicode support
-
+HOST = "null3d"
+PORT  = "1521"
 
 class Config:
 	@staticmethod
-	def getCursor(username = ADMIN_USER, password=ADMIN_PASSWORD, host="null3d", port="1521"):
+	def getCursor(username = ADMIN_USER, password=ADMIN_PASSWORD, host=HOST, port=PORT):
 		#Se definen los parametros de conexion a la base de host
 		try:
 			conn = cx_Oracle.connect('%s/%s@%s:%s/XE' % (username, password, str(host), str(port)))

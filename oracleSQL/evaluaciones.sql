@@ -16,3 +16,7 @@ ALTER TABLE evaluaciones ADD CONSTRAINT PK_evaluacion
 	PRIMARY KEY (id)
 ;
 
+ALTER TABLE evaluaciones ADD CONSTRAINT FK_evaluaciones_plantillas 
+	FOREIGN KEY (plantilla_id) REFERENCES plantillas (id)
+;
+

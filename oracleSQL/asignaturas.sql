@@ -8,10 +8,6 @@ CREATE TABLE asignaturas
 ;
 
 
-ALTER TABLE asignaturas
-	ADD CONSTRAINT UQ_asignaturas_id UNIQUE (id)
-;
-
 ALTER TABLE asignaturas ADD CONSTRAINT PK_asignaturas 
 	PRIMARY KEY (id)
 ;

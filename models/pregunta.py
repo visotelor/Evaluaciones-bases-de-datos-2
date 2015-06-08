@@ -6,7 +6,7 @@ class Pregunta:
     tabla = "preguntas"
 
     def __init__(self, id, pregunta):
-        self.id = id
+        self.id = str(id)
         self.pregunta = pregunta
 
 

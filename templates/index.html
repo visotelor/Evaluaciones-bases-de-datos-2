@@ -1,3 +1,8 @@
-$def with (datos)
+$def with (usuario)
 
-<h1> Bienvenido  a la tienda virtual </h1>
+<h1> Bienvenido  a la Evaluacion </h1>
+
+$if usuario is not None:
+	<h2> $usuario.nombre <h2>
+$else:
+	<h2> Por favor loguearse <h2>

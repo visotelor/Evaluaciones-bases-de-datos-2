@@ -2,8 +2,8 @@ DROP TABLE grupos CASCADE CONSTRAINTS
 ;
 CREATE TABLE grupos
 (
-	asignatura_id  NUMBER(6) NOT NULL,
 	id             NUMBER(10) NOT NULL,
+	asignatura_id  NUMBER(6) NOT NULL,
 	docente_id     NUMBER(10) NOT NULL,
 	periodo        NUMBER(8)
 )

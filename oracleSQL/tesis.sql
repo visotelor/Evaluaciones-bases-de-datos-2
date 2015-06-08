@@ -3,9 +3,9 @@ DROP TABLE tesis CASCADE CONSTRAINTS
 CREATE TABLE tesis
 (
 	id           NUMBER(8) NOT NULL,
+	nombre       VARCHAR2(100) NOT NULL,
 	jurado_id    NUMBER(10),
-	director_id  NUMBER(10),
-	nombre       VARCHAR2(100)
+	director_id  NUMBER(10)
 )
 ;
 

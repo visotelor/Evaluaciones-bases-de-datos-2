@@ -1,11 +1,7 @@
 import web
 web.config.debug = False
-from controllers.ciudad_controller import *
-from controllers.categoria_controller import *
-from controllers.proveedor_controller import *
-from controllers.producto_controller import *
+from controllers.plantilla_controller import *
 from controllers.usuario_controller import *
-from controllers.catalogo_productos import *
 from controllers.index_controller import *
 from controllers.order_controller import *
 from controllers.admin_controller import *
@@ -19,23 +15,9 @@ urls = (
     '/index', 'IndexController',
     '/login','Login',
     '/reset','Reset',
-    '/ciudad/crear/.*', 'CrearCiudad',
-    '/categoria/crear/.*', 'CrearCategoria',
-    '/ciudad/listar/.*', 'ListarCiudades',
-    '/categoria/listar/.*', 'ListarCategorias',
-    '/proveedores/listar/.*', 'ListarProveedores',
-    '/proveedor/crear/.*', 'CrearProovedor',
-    '/productos/listar/.*', 'ListarProductos',
-    '/producto/crear/.*', 'CrearProducto',
-    '/usuario/listar/.*', 'ListarUsuarios',
-    '/usuario/crear/.*', 'CrearUsuario',
-    '/producto/ver/.*','ConsultarProducto',
-    '/catalogo/.*', 'CatalogoProductos',
-    '/orden/anadir/.*', 'AnadirProducto',
-    '/orden/previas/.*', 'VerOrdenesPrevias',
-    '/carrito/checkout/.*', 'CheckOutCarrito',
-    '/carrito/.*', 'VerCarrito',
-    '/admin/.*', 'VerAdmin',
+    '/plantilla/crear/.*', 'CrearPlantilla',
+    '/plantilla/listar/.*', 'ListarPlantilla',
+    '/plantilla/ver/.*', 'VerPlantilla',
 )
 
 render = web.template.render('templates/', base="base")

@@ -1,43 +1,33 @@
 from config import Config
-
+from datetime import date
 
 #Este modelo es de otro proyecto, hay que adaptarlo para las necesidades
 class Usuario:
 
     tabla = "usuarios"
 
-    def __init__(self, identificador, nombre_completo, usuario, contrasena, e_mail, direccion_residencia):
+    def __init__(self, identificador, nombre, usuario, contrasena, e_mail, habilitado="Y"):
         self.id = identificador
-        self.nombre_completo = nombre_completo
+        self.nombre = nombre
         self.usuario = usuario
         self.contrasena = contrasena
         self.e_mail = e_mail
-        self.privilegios = Usuario.getTipo(self.id)
-
-    #actualizar
-    def save(self):
-        query = "UPDATE  %s SET  nombre_completo='%s', usuario='%s', contrasena='%s', e_mail='%s', direccion_residencia='%s' dr_ciudad_id =%d WHERE id=%s" % (Usuario.tabla, self.nombre_completo, self.usuario, self.contrasena,self.e_mail,self.direccion_residencia,self.dr_ciudad_id,self.id)
-        cursor = Config.getCursor()
-        try:
-            cursor.execute(query)
-        except Exception, e:
-            print e
-            print "No es posible actualizar el registro"
-            return None
-        return self
+        self.habilitado = habilitado
+        self.tipo = Usuario.getTipo(self.id)
 
     #insertar
     @staticmethod
-    def create(identificador,nombre_completo, usuario, contrasena, e_mail,direccion_residencia,dr_ciudad_id):
-        query = " INSERT INTO %s (id, nombre_completo, usuario, contrasena, e_mail,direccion_residencia, dr_ciudad_id) VALUES (%s,'%s','%s','%s','%s','%s', %s)  RETURNING id " % (Usuario.tabla, str(int(identificador)), nombre_completo, usuario, contrasena, e_mail,direccion_residencia, str(int(dr_ciudad_id)))
+    def create(nombre, usuario, contrasena, e_mail="none@none.com", habilitado="Y"):
+        query = " INSERT INTO %s (id, email, contrasena, nombre, habilitado, username) VALUES (sequence_usuarios.nextval,'%s','%s','%s','%s','%s')" % (Usuario.tabla, str(e_mail), contrasena, nombre, habilitado, usuario)
         cursor = Config.getCursor()
         try:
             cursor.execute(query)
+            cursor.execute("select sequence_usuarios.currval from DUAL")
         except Exception, e:
             print e
             print "No es posible guardar objeto"
         id = cursor.fetchone()
-        return Usuario(id[0],nombre_completo, usuario, contrasena, e_mail,direccion_residencia, dr_ciudad_id)
+        return Usuario(id[0],nombre, usuario, contrasena, e_mail, habilitado)
     
     #consultar
     @staticmethod
@@ -53,72 +43,12 @@ class Usuario:
             return None
         if row == None: #si no se encuentra ningun registro
             return None         
-        return Usuario(row['id'], row['nombre_completo'], row['usuario'], row['contrasena'], row['e_mail'], row['direccion_residencia'], row['dr_ciudad_id'])
+        return Usuario(row[0], row[3], row[5], row[2], row[1], row[4])
 
-    #consultar todos
-    @staticmethod
-    def getAll():
-        cursor = Config.getCursor()
-        query = "SELECT * FROM %s " % Usuario.tabla
-        try:
-            cursor.execute(query)
-        except Exception, e:
-            print e
-            print "No es posible ejecutar query  o no hay resultados validos"
-            return []
-        usuarios  = []
-        rows = cursor.fetchall()
-        for row in rows:
-            usuarios.append(Usuario(row['id'], row['nombre_completo'], row['usuario'], row['contrasena'], row['e_mail'],row['direccion_residencia'], row['dr_ciudad_id']))
-        return usuarios
-
-    #consulta para usuario o e_email o nombre_completo (criterio de busqueda, texto de busqueda)
-    @staticmethod
-    def getAllWith(criterio,entrada):
-        cursor = Config.getCursor()
-        query = "SELECT * FROM %s WHERE %s='%s'" % (Usuario.tabla,criterio,entrada)
-        try:
-            cursor.execute(query)
-        except Exception, e:
-            print e
-            print "No es posible ejecutar query  o no hay resultados validos"
-            return []
-        usuarios  = []
-        rows = cursor.fetchall()
-        for row in rows:
-            usuarios.append(Usuario(row['id'], row['nombre_completo'], row['usuario'], row['contrasena'], row['e_mail'],row['direccion_residencia'], row['dr_ciudad_id']))
-        return usuarios
-
-    # obtener ciudad de residencia 
-    @staticmethod
-    def obtenerCiudad(id):
-        cursor = Config.getCursor()
-        query = "SELECT ciudades.nombre FROM usuarios JOIN ciudades ON usuarios.dr_ciudad_id = ciudades.id WHERE usuarios.id = %s" %id
-        try:
-            cursor.execute(query)
-        except Exception, e:
-            print e
-            print "No es posible ejecutar query  o no hay resultados validos"
-            return []
-        row = cursor.fetchone()
-        ciudad = row['nombre'] # toma el nombre de la columna que dio como resultado
-        return ciudad
-
+ 
     @staticmethod
     def getTipo(id):
         cursor = Config.getCursor()
-        query = "SELECT id FROM usuarios_de_internet WHERE id=%d" %id
-        try:
-            cursor.execute(query)
-        except Exception, e:
-            print e
-            print "No es posible ejecutar query  o no hay resultados validos"
-            return []
-        resultado = []
-        row = cursor.fetchone()
-        if row != None:
-            resultado.append("Usuario de internet")
-
         query = "SELECT id FROM administradores WHERE id=%d" %id
         try:
             cursor.execute(query)
@@ -126,11 +56,12 @@ class Usuario:
             print e
             print "No es posible ejecutar query  o no hay resultados validos"
             return []
+        resultado =  "NoTipo"
         row = cursor.fetchone()
         if row != None:
-            resultado.append("Administrador")
+            resultado="Administrador"
 
-        query = "SELECT id FROM despachadores WHERE id=%d" %id
+        query = "SELECT id FROM funcionarios WHERE id=%d" %id
         try:
             cursor.execute(query)
         except Exception, e:
@@ -139,5 +70,171 @@ class Usuario:
             return []
         row = cursor.fetchone()
         if row != None:
-            resultado.append("Despachador")
+            resultado="Funcionario"
+
+        query = "SELECT id FROM estudiantes WHERE id=%d" %id
+        try:
+            cursor.execute(query)
+        except Exception, e:
+            print e
+            print "No es posible ejecutar query  o no hay resultados validos"
+            return []
+        row = cursor.fetchone()
+        if row != None:
+            resultado="Estudiante"
+
+        query = "SELECT id FROM estructuras WHERE id=%d" %id
+        try:
+            cursor.execute(query)
+        except Exception, e:
+            print e
+            print "No es posible ejecutar query  o no hay resultados validos"
+            return []
+        row = cursor.fetchone()
+        if row != None:
+            resultado="Estructura"
+
         return resultado
+
+    @staticmethod
+    def isValidUser(username, contrasena):
+        query =  "SELECT id FROM %s WHERE username='%s' AND contrasena='%s'" % (Usuario.tabla, username, contrasena)
+        cursor =  Config.getCursor()
+        try:
+            cursor.execute(query)
+        except Exception, e:
+            print e
+            print "No es posible guardar objeto"
+        id = cursor.fetchone()
+        if id is None:
+            return None
+        else:
+            return id[0]
+
+
+class  Funcionario:
+    tabla = "funcionarios"
+    tabla_cargos = "cargos_historicos"
+
+    def __init__(self, usuario, codigo):
+        self.usuario = usuario
+        self.codigo = codigo
+        self.cargo = self.getCargo()
+        self.id = usuario.id
+    
+    @staticmethod
+    def create(usuario, codigo):
+        query = " INSERT INTO %s (id, codigo) VALUES (%s, %s)" % (Funcionario.tabla, str(usuario.id), str(codigo))
+        cursor = Config.getCursor()
+        try:
+            cursor.execute(query)
+        except Exception, e:
+            print e
+            print "No es posible guardar objeto"
+        return Funcionario(usuario, codigo)
+
+    def setCargo(self, cargo, fecha_inicio=date.today()):
+        # Primero le doy formato a la fecha
+        fecha = fecha_inicio.strftime("%d/%m/%Y")
+        query = "INSERT INTO %s (fecha_inicio, funcionario_id, cargo_id)  VALUES (to_date('%s', 'dd/mm/yyyy'), %s, %s)" % (Funcionario.tabla_cargos, fecha, self.id, cargo.id)
+        try:
+            cursor = Config.getCursor()
+            cursor.execute(query)
+            return True
+        except Exception, e:
+            print e
+            print "No es posible guardar objeto"
+            return False
+
+    def getCargo(self):
+        return None
+
+class Estudiante:
+    tabla = "estudiantes"
+
+    def __init__(self, usuario, codigo, estructura):
+        self.usuario = usuario
+        self.codigo =  codigo
+        self.estructura = estructura
+        self.nombre = usuario.nombre
+        self.id = usuario.id
+        self.tesis = self.getTesis()
+
+    @staticmethod
+    def create(usuario, codigo, estructura):
+        query = " INSERT INTO %s (id, codigo, estructura_id) VALUES (%s, %s, %s)" % (Estudiante.tabla, str(usuario.id), str(codigo), str(estructura.id))
+        cursor = Config.getCursor()
+        try:
+            cursor.execute(query)
+        except Exception, e:
+            print e
+            print "No es posible guardar objeto"
+        return Estudiante(usuario, codigo, estructura)
+
+    def setTesis(self, tesis):
+        query = "UPDATE %s SET tesis_id=%s WHERE id=%s" % (Estudiante.tabla, str(tesis.id), str(self.usuario.id))
+        cursor = Config.getCursor()
+        try:
+            cursor.execute(query)
+            return True
+        except Exception, e:
+            print e
+            print "No es posible guardar objeto"
+            return False
+    
+    def getTesis(self):
+        return None
+
+    @staticmethod
+    def getById(id):
+        query = ""
+        return None
+
+
+class Administrador:
+    tabla = "administradores"
+
+    def __init__(self, usuario):
+        self.usuario = usuario
+        self.id = usuario.id
+
+    @staticmethod
+    def create(usuario):
+        query = " INSERT INTO %s (id) VALUES (%s)" % (Administrador.tabla, str(usuario.id))
+        cursor = Config.getCursor()
+        try:
+            cursor.execute(query)
+        except Exception, e:
+            print e
+            print "No es posible guardar objeto"
+        return Administrador(usuario)
+
+
+class  Estructura:
+    tabla = "estructuras"
+
+    def __init__(self, usuario, cargo_director, estructura_padre=None):
+        self.usuario = usuario
+        self.nombre = usuario.nombre
+        self.cargo_director = cargo_director
+        self.id =  usuario.id
+        self.estructura_padre =  estructura_padre
+
+    @staticmethod
+    def create(usuario, cargo_director, estructura_padre=None):
+        if estructura_padre:
+            query = " INSERT INTO %s (id, director_id, dependencia_id) VALUES (%s, %s, %s)" % (Estructura.tabla, str(usuario.id),  str(cargo_director.id), str(estructura_padre.id))
+        else:
+            query = " INSERT INTO %s (id, director_id) VALUES (%s, %s)" % (Estructura.tabla, str(usuario.id), str(cargo_director.id))
+        try:
+            cursor = Config.getCursor()
+            cursor.execute(query)
+        except Exception, e:
+            print e
+            print "No es posible guardar objeto"
+        return Estructura(usuario, cargo_director, estructura_padre)
+
+
+    def setCargoDirector(self, cargo):
+        return True
+    

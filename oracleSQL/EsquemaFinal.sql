@@ -22,10 +22,6 @@ CREATE TABLE asignaturas
 ;
 
 
-ALTER TABLE asignaturas
-	ADD CONSTRAINT UQ_asignaturas_id UNIQUE (id)
-;
-
 ALTER TABLE asignaturas ADD CONSTRAINT PK_asignaturas 
 	PRIMARY KEY (id)
 ;
@@ -48,9 +44,6 @@ ALTER TABLE usuarios
 	ADD CONSTRAINT UQ_usuarios_email UNIQUE (email)
 ;
 
-ALTER TABLE usuarios
-	ADD CONSTRAINT UQ_usuarios_habilitado UNIQUE (habilitado)
-;
 
 ALTER TABLE usuarios
 	ADD CONSTRAINT UQ_usuarios_username UNIQUE (username)
@@ -110,6 +103,7 @@ CREATE TABLE plantillas
 ALTER TABLE plantillas ADD CONSTRAINT PK_plantilla 
 	PRIMARY KEY (id)
 ;
+
 
 DROP TABLE preguntas CASCADE CONSTRAINTS
 ;
@@ -203,9 +197,6 @@ ALTER TABLE estudiantes ADD CONSTRAINT PK_estudiantes
 	PRIMARY KEY (id)
 ;
 
-ALTER TABLE estudiantes ADD CONSTRAINT FK_estudiantes_estructuras 
-	FOREIGN KEY (estructura_id) REFERENCES estructuras (id)
-;
 
 ALTER TABLE estudiantes ADD CONSTRAINT FK_estudiantes_usuarios 
 	FOREIGN KEY (id) REFERENCES usuarios (id)
@@ -340,6 +331,10 @@ ALTER TABLE estructuras ADD CONSTRAINT PK_estructuras
 	PRIMARY KEY (id)
 ;
 
+ALTER TABLE estudiantes ADD CONSTRAINT FK_estudiantes_estructuras 
+	FOREIGN KEY (estructura_id) REFERENCES estructuras (id)
+;
+
 ALTER TABLE estructuras ADD CONSTRAINT FK_estructuras_cargos 
 	FOREIGN KEY (director_id) REFERENCES cargos (id)
 ;
@@ -352,3 +347,25 @@ ALTER TABLE estructuras ADD CONSTRAINT FK_estructuras_usuarios
 	FOREIGN KEY (id) REFERENCES usuarios (id)
 ;
 
+
+ALTER TABLE evaluaciones ADD CONSTRAINT FK_evaluaciones_plantil FOREIGN KEY (plantilla_id) REFERENCES plantillas (id) ;
+
+
+
+DROP SEQUENCE sequence_cargos;
+DROP SEQUENCE sequence_plantillas;
+DROP SEQUENCE sequence_usuarios;
+DROP SEQUENCE sequence_preguntas;
+DROP SEQUENCE sequence_grupos;
+DROP SEQUENCE sequence_tesis ;
+DROP SEQUENCE sequence_resultados ;
+DROP SEQUENCE sequence_evaluaciones  ;
+
+CREATE SEQUENCE sequence_cargos  START WITH 1  INCREMENT BY   1;
+CREATE SEQUENCE sequence_usuarios  START WITH 1  INCREMENT BY   1;
+CREATE SEQUENCE sequence_plantillas  START WITH 1  INCREMENT BY   1;
+CREATE SEQUENCE sequence_preguntas  START WITH 1  INCREMENT BY   1;
+CREATE SEQUENCE sequence_grupos  START WITH 1  INCREMENT BY   1;
+CREATE SEQUENCE sequence_tesis  START WITH 1  INCREMENT BY   1;
+CREATE SEQUENCE sequence_resultados  START WITH 1  INCREMENT BY   1;
+CREATE SEQUENCE sequence_evaluaciones  START WITH 1  INCREMENT BY   1;

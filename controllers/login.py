@@ -46,14 +46,14 @@ class Login:
         datos_in = web.input()
         name = datos_in['user']
         passwd = datos_in['passwd']
-        usuario = Usuario.getAllWith("usuario",name)[0]
+        id = Usuario.isValidUser(name, passwd)
         try:
-            #if hashlib.sha1("sAlT754-"+passwd).hexdigest() == usuario.contrasena
-            if passwd == usuario.contrasena:
+            if id is not None:
+                usuario = Usuario.getById(id)
                 web.ctx.session.login = 1
                 web.ctx.session.privilege = usuario.id
                 print web.ctx.session.privilege
-                web.seeother('/catalogo/')# Cambiar por menu inicial
+                web.seeother('/')# Cambiar por menu inicial
             else:
                 web.ctx.session.login = 0
                 web.ctx.session.privilege = 0
