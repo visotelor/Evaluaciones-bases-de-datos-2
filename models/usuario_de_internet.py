@@ -1,7 +1,7 @@
 from config import Config
 from models.usuario import Usuario
-from ciudad import Ciudad
-from models.orden import Orden
+#from ciudad import Ciudad
+#from models.orden import Orden
 
 class Usuario_de_internet:
 

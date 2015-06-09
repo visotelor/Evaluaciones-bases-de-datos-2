@@ -12,9 +12,9 @@ START /home/null3d/Git_repos/Evaluaciones-bases-de-datos-2/oracleSQL/EsquemaFina
 """
 import cx_Oracle
 
-ADMIN_USER = "db2"
-ADMIN_PASSWORD = "db2"
-HOST = "null3d"
+ADMIN_USER = "vivianadb"
+ADMIN_PASSWORD = "viviana"
+HOST = "localhost"
 PORT  = "1521"
 
 class Config:

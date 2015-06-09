@@ -11,11 +11,28 @@ class Plantilla:
         self.nombre = nombre
         self.modificable = modificable
         self.eliminada = eliminada
-        self.preguntas = self.getPreguntas()
+        self.preguntas = self.getPreguntas(id)
 
 
     @staticmethod
     def create(nombre, modificable="Y", eliminada="N"):
+        query = " INSERT INTO %s (id, nombre, modificable, eliminada)  VALUES (sequence_plantillas.nextval, '%s', '%s', '%s')" % (Plantilla.tabla, nombre, modificable, eliminada)
+        cursor = Config.getCursor()
+        try:
+            cursor.execute(query)
+            cursor.execute("select sequence_plantillas.currval from DUAL")
+        except Exception, e:
+            print e
+            print query
+            print "No es posible guardar objeto"
+            return None
+        row = cursor.fetchone()[0]
+        return Plantilla(row, nombre, modificable, eliminada)
+
+    @staticmethod
+    def create(nombre):
+        modificable="Y"
+        eliminada="N"
         query = " INSERT INTO %s (id, nombre, modificable, eliminada)  VALUES (sequence_plantillas.nextval, '%s', '%s', '%s')" % (Plantilla.tabla, nombre, modificable, eliminada)
         cursor = Config.getCursor()
         try:
@@ -44,14 +61,17 @@ class Plantilla:
             print "No es posible guardar la relacion"
             return False
 
-    def getPreguntas(self):
-        query = "SELECT pr.id, pr.pregunta FROM %s tr, %s pr WHERE tr.plantilla_id=%s" % (Plantilla.tabla_preguntas_plantillas, Pregunta.tabla, self.id)
+
+    @staticmethod #id plantilla
+    def getPreguntas(id):
+        query = "SELECT pr.id, pr.pregunta FROM %s tr, %s pr, %s pl WHERE tr.plantilla_id=pl.id AND pr.id=tr.pregunta_id AND pl.id=%s" % (Plantilla.tabla_preguntas_plantillas, Pregunta.tabla, Plantilla.tabla, id)
         cursor = Config.getCursor()
-        preguntas = []
+        preguntas = [] 
         try:
             cursor.execute(query)
             rows = cursor.fetchall()
             for row in rows:
+                print row
                 preguntas.append(Pregunta(row[0], row[1]))
             return preguntas
         except Exception, e:
@@ -66,8 +86,7 @@ class Plantilla:
         query = "SELECT * FROM %s WHERE id=%s" % (Plantilla.tabla, id)
         try:
             cursor.execute(query)
-            row = cursor.fetchone()  
-            print row
+            row = cursor.fetchone() 
         except:
             print "No es posible ejecutar query  o no hay resultados validos"
             return None

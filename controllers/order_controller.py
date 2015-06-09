@@ -1,7 +1,7 @@
-from models.producto import Producto
+#from models.producto import Producto
 from controllers.login import logged
 from models.usuario_de_internet import Usuario_de_internet
-from models.orden import Orden
+#from models.orden import Orden
 import web
 
 render = web.template.render('templates/', base="base")

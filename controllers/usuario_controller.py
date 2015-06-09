@@ -1,8 +1,8 @@
 from models.usuario import Usuario
 from models.administrador import Administrador
-from models.despachador import Despachador
-from models.usuario_de_internet import Usuario_de_internet
-from models.ciudad import Ciudad
+#from models.despachador import Despachador
+#from models.usuario_de_internet import Usuario_de_internet
+#from models.ciudad import Ciudad
 import web
 
 

@@ -7,6 +7,7 @@ from controllers.order_controller import *
 from controllers.admin_controller import *
 from controllers.login import *
 from controllers.reset import *
+from controllers.evaluacion_controller import *
 
 
 # Aca se definen las URLs (url, nombre controlador)
@@ -15,9 +16,11 @@ urls = (
     '/index', 'IndexController',
     '/login','Login',
     '/reset','Reset',
-    '/plantilla/crear/.*', 'CrearPlantilla',
-    '/plantilla/listar/.*', 'ListarPlantilla',
+    '/plantilla/crear/', 'CrearPlantilla',
+    '/plantilla/listar/', 'ListarPlantilla',
     '/plantilla/ver/.*', 'VerPlantilla',
+    '/evaluacion/ver/.*', 'VerEvaluacion',
+    '/evaluacion/crear/', 'CrearEvaluacion',    
 )
 
 render = web.template.render('templates/', base="base")

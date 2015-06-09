@@ -1,0 +1,29 @@
+$def with (datos)
+
+<script type="text/javascript">
+    function showContent() {
+        element = document.getElementById("content");
+        check = document.getElementById("check");
+        if (check.checked) ín
+            element.style.display='block';
+        }
+        else {
+            element.style.display='none';
+        }
+    }
+</script>
+
+<h1> Crear evaluacion </h1>
+
+<form method="post" action="/evaluacion/crear/" role="form">
+  Periodo: <input type="text"  name="periodo"> <br>
+  Fecha inicial: <input type="text" placeholder="AAAA/MM/DD" name="fecha_inicial"> <br>
+  Fecha final: <input type="text" placeholder="AAAA/MM/DD" name="fecha_final"> <br>
+  Tiempo máximo: <input type="text" name="tiempo_maximo"> <br>
+  Plantilla: <input type="text" name="plantilla_id"> <br>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+
+
+
