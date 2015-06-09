@@ -4,6 +4,15 @@ from models.plantilla import Plantilla
 from models.usuario import Usuario, Administrador, Estudiante, Estructura, Funcionario
 from models.tesis import Tesis
 
+#crear roles
+'''create role estudiante not identified;
+create role administrador not identified;
+create role funcionario not identified;
+create role estructura not identified;'''
+
+#asignar permisos
+
+
 #Creo 2 asignaturas
 a1 = Asignatura.create("Bases de datos 2")
 a2 = Asignatura.create("Bases de datos 1")
@@ -34,7 +43,6 @@ es2 = Estructura.create(u2, decano_ing_c, es1)
 u3 = Usuario.create("Ingenieria de sistemas",  "ingsistemas", "contrasena", "ingsistemas@u.co")
 es3 = Estructura.create(u3, coordinador_ing_sistemas, es2)
 
-
 #Creo un estudiante
 u10 =  Usuario.create("Fabian Puentes", "fpuentes", "contrasena", "fpuentes@u.co")
 e10 = Estudiante.create(u10, "54535453", es3)
@@ -52,6 +60,8 @@ e10.setTesis(t1)
 
 #Ejemplo para obtener el tipo de un usuario
 tipo = u11.getTipo(u11.id)
+
+
 
 
 
